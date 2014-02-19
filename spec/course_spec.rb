@@ -35,8 +35,8 @@ describe Course do
       Course.drop_table
       Course.create_table
 
-      table_check_sql = "SELECT tbl_name FROM sqlite_master WHERE type='table' AND tbl_name='Courses';"
-      expect(DB[:conn].execute(table_check_sql)[0]).to eq(['Courses'])
+      table_check_sql = "SELECT tbl_name FROM sqlite_master WHERE type='table' AND tbl_name='courses';"
+      expect(DB[:conn].execute(table_check_sql)[0]).to eq(['courses'])
     end
   end
 
@@ -45,7 +45,7 @@ describe Course do
       Course.create_table
       Course.drop_table
 
-      table_check_sql = "SELECT tbl_name FROM sqlite_master WHERE type='table' AND tbl_name='Courses';"
+      table_check_sql = "SELECT tbl_name FROM sqlite_master WHERE type='table' AND tbl_name='courses';"
       expect(DB[:conn].execute(table_check_sql)[0]).to be_nil
     end
   end
