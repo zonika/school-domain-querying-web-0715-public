@@ -2,6 +2,15 @@ require_relative 'spec_helper'
 
 describe Department do
 
+  before do
+    Department.create_table
+  end
+
+  after do
+    Department.drop_table
+  end
+
+
   describe 'attributes' do 
     it 'has an id, name' do
       attributes = {
