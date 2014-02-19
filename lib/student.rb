@@ -79,13 +79,16 @@ end
   # Student model
   # has_many enrollments 
   # has_many courses through enrollments
+  
   # Enrolment model
   # belong_to students
   # belong_to courses
+
   # Course model
   # has_many enrollments
   # has_many students though enrollments
   # belong_to department
+
   # Department model
   # has_many courses
 

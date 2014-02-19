@@ -37,7 +37,7 @@ describe Department do
     end
   end
 
-  describe '::drop_table' do
+  describe '.drop_table' do
     it "drops the departments table" do
       Department.create_table
       Department.drop_table
