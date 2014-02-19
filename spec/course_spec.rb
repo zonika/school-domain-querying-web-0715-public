@@ -96,6 +96,21 @@ describe Course do
     end
   end
 
+  describe '.find_all_by_department_id' do
+    it "returns records matching a property" do
+      dot_net = Course.new
+      dot_net.name = "Advanced .NET Programming"
+      dot_net.department_id = 9999
+      
+      dot_net.save
+
+      dot_net_from_db = Course.find_all_by_department_id(9999)[0]
+
+      expect(dot_net_from_db.name).to eq("Advanced .NET Programming")
+      expect(dot_net_from_db).to be_an_instance_of(Course)
+    end
+  end
+
   describe "#update" do
     it 'updates and persists a Course in the database' do
       dot_net = Course.new
