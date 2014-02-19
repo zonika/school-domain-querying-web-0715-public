@@ -93,6 +93,18 @@ describe Department do
     end
   end
 
+  describe '.find_by_id' do
+    it "finds by id" do
+      comp_sci = Department.new
+      comp_sci.name = "Computer Science"
+      comp_sci.save
+
+      comp_sci_from_db = Department.find_by_id(comp_sci.id)
+      expect(comp_sci_from_db.name).to eq("Computer Science")
+      expect(comp_sci_from_db).to be_an_instance_of(Department)
+    end
+  end
+
   describe "#update" do
     it 'updates and persists a department in the database' do
       comp_sci = Department.new
