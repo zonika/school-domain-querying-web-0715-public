@@ -1,3 +1,4 @@
+require 'pry'
 class Course
   ATTRIBUTES = {
     :id => "INTEGER PRIMARY KEY",
@@ -5,6 +6,7 @@ class Course
     :department_id => "INTEGER"
   }
   attr_accessor *ATTRIBUTES.keys
+  attr_reader :department
 
   def self.create_table
     sql = <<-SQL
@@ -40,6 +42,25 @@ class Course
 
   def self.schema_definition
     ATTRIBUTES.collect{|k,v| "#{k} #{v}"}.join(",")
+  end
+
+  def self.find_all_by_department_id(id)
+    sql = "SELECT * FROM #{table_name} WHERE department_id = ?"
+    result = DB[:conn].execute(sql,id)
+    result.map do |row| 
+      self.new_from_db(row)
+    end
+  end
+
+  def department
+    @department ||= begin
+                      Department.find_by_id(department_id)
+                    end
+  end
+
+  def department=(department)
+    self.department_id = department.id
+    @department = department
   end
 
   def sql_for_update

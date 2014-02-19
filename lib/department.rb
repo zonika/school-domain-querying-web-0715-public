@@ -37,8 +37,26 @@ class Department
     self.new_from_db(result) if result
   end
 
+  def self.find_by_id(id)
+    sql = "SELECT * FROM #{table_name} WHERE id = ?"
+    result = DB[:conn].execute(sql,id)[0] #[]    
+    self.new_from_db(result) if result
+  end
+
   def self.schema_definition
     ATTRIBUTES.collect{|k,v| "#{k} #{v}"}.join(",")
+  end
+
+  def courses
+    Course.find_all_by_department_id(self.id)
+  end
+
+  def courses=(courses)
+    courses.each do |course|
+      course.department_id = self.id
+      course.save
+    end
+    @courses = courses
   end
 
   def sql_for_update
