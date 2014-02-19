@@ -51,12 +51,10 @@ class Department
     Course.find_all_by_department_id(self.id)
   end
 
-  def courses=(courses)
-    courses.each do |course|
-      course.department_id = self.id
-      course.save
-    end
-    @courses = courses
+  def add_course(course)
+    course.department_id = self.id
+    course.save
+    self.save
   end
 
   def sql_for_update
