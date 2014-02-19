@@ -2,6 +2,14 @@ require_relative 'spec_helper'
 
 describe Student do
 
+  before do
+    Student.create_table
+  end
+
+  after do
+    Student.drop_table
+  end
+
   describe 'attributes' do 
     it 'has an id, name, tagline, github, twitter, blog_url, image_url, biography' do
       attributes = {
