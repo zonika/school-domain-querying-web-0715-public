@@ -64,4 +64,42 @@ describe "Integration" do
       expect(comp_sci_from_db.courses.first.name).to eq("Underwater Basket Weaving")
     end
   end
+
+  context "Student relation to Department" do
+    before do
+      Student.create_table
+      Course.create_table
+      Registration.create_table
+    end
+
+    after do
+      Student.drop_table
+      Course.drop_table
+      Registration.drop_table
+    end
+
+    it "Students can register for Courses" do
+      arel = Student.new
+      arel.save
+      comp_sci = Course.new
+      comp_sci.name = "Computer Science"
+      comp_sci.save
+
+      arel.add_course(comp_sci)
+      expect(arel.courses.count).to eq 1
+      expect(arel.courses.first.name).to eq "Computer Science"
+    end
+
+    it "Courses can add students" do
+      comp_sci = Course.new
+      comp_sci.save
+      arel = Student.new
+      arel.name = "Arel"
+      arel.save
+
+      comp_sci.add_student(arel)
+      expect(comp_sci.students.count).to eq(1)
+      expect(comp_sci.students.first.name).to eq("Arel")
+    end
+  end
 end

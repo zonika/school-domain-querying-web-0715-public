@@ -95,4 +95,27 @@ class Course
   def save
     persisted? ? update : insert
   end
+
+  def add_student(student)
+    sql = "INSERT INTO registrations (course_id, student_id) VALUES (?,?);"
+    DB[:conn].execute(sql, self.id, student.id)
+  end
+
+  def students
+    sql = <<-SQL
+    SELECT students.* 
+    FROM students 
+    JOIN registrations 
+    ON students.id = registrations.student_id 
+    JOIN courses 
+    ON courses.id = registrations.course_id 
+    WHERE students.id = ?
+    SQL
+    result = DB[:conn].execute(sql, self.id) 
+    result.map do |row|
+      Student.new_from_db(row)
+    end
+  end
+
+
 end
