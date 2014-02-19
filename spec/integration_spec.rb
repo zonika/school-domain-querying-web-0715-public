@@ -48,7 +48,7 @@ describe "Integration" do
     end
 
     it "courses added to departments" do
-      comp_sci.courses << dot_net
+      comp_sci.add_course dot_net
 
       expect(comp_sci.courses.count).to eq 1
       expect(comp_sci.courses.first.name).to eq("Advanced .NET Programming")
@@ -57,7 +57,7 @@ describe "Integration" do
     it "persists changes to changed objects after course added" do
       comp_sci.name = "Communications"
       dot_net.name = "Underwater Basket Weaving"
-      comp_sci.courses = [dot_net]
+      comp_sci.add_course dot_net
 
       comp_sci_from_db = Department.find_by_name "Communications"
       expect(comp_sci_from_db.courses.count).to eq 1
