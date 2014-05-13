@@ -1,6 +1,7 @@
 ---
 tags: sql, oop, orm
 language: ruby, sql
+  resources: 1
 ---
 
 School Domain Querying
@@ -12,3 +13,6 @@ Get all the tests passing, and have fun! :kissing_closed_eyes:
 
 
 
+
+## Resources
+* [Treehouse](http://teamtreehouse.com/library/database-foundations) - [Database Foundations: Joining Relational Data Between Tables in SQL](http://teamtreehouse.com/library/database-foundations#joining-relational-data-between-tables-in-sql)
