@@ -4,8 +4,7 @@
   resources: 1
 ---
 
-School Domain Querying
-======================
+## School Domain Querying
 
 We're going to write an ORM that requires you to use a join. The Student class has already been completed. Use is as a starting point. 
 
