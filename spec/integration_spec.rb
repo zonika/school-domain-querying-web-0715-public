@@ -25,7 +25,14 @@ describe "Integration" do
       Department.drop_table
     end
 
-    it "can successfully get and set department" do
+    it "can successfully set department with department_id" do
+      expect(dot_net.department).to be_nil
+      dot_net.department = comp_sci
+      expect(dot_net.department.name).to eq('Computer Science')
+      expect(dot_net.department_id).to eq(1)
+    end
+
+    it "can successfully get department" do
       expect(dot_net.department).to be_nil
       dot_net.department = comp_sci
       expect(dot_net.department.name).to eq('Computer Science')
