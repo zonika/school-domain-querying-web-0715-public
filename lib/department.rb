@@ -1,11 +1,5 @@
 class Department
-	# attr_accessor :id, :name
-
-  ATTRIBUTES = {
-    :id => "INTEGER PRIMARY KEY",
-    :name => "TEXT",
-  }
-  attr_accessor *ATTRIBUTES.keys
+	attr_accessor :id, :name
 
 	def self.create_table
 		sql = <<-SQL

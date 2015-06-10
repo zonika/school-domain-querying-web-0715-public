@@ -1,11 +1,17 @@
 class Course
-	ATTRIBUTES = {
-    :id => "INTEGER PRIMARY KEY",
-    :name => "TEXT",
-    :department_id => "INTEGER"
-  }
-  attr_accessor *ATTRIBUTES.keys
-  attr_reader :department
+  attr_accessor :id, :name, :department_id
+
+#---------UNCLEAR WHEN TO BUILD THESE------------#
+  def department
+    @department ||= 
+    Department.find_by_id(department_id)
+  end
+  
+  def department=(department)
+    self.department_id = department.id
+    @department = department
+  end
+#--------------------------------------------------#
 
   def self.create_table
   	sql = <<-SQL
@@ -91,22 +97,7 @@ class Course
     persisted? ? update : insert
   end
 
-#Unlclear when to build these methods
-  def department
-    @department ||= 
-    Department.find_by_id(department_id)
-  end
-
-  def department=(department)
-    self.department_id = department.id
-    @department = department
-  end
-
-  def add_student(student)
-    sql = "INSERT INTO registrations (course_id, student_id) VALUES (?,?);"
-    DB[:conn].execute(sql, self.id, student.id)
-  end
-
+#---------UNCLEAR WHEN TO BUILD THESE------------#
   def students
     sql = <<-SQL
     SELECT students.* 
@@ -122,4 +113,11 @@ class Course
       Student.new_from_db(row)
     end
   end
+
+  def add_student(student)
+    sql = "INSERT INTO registrations (course_id, student_id) VALUES (?,?);"
+    DB[:conn].execute(sql, self.id, student.id)
+  end
+#------------------------------------------------#
+
 end
