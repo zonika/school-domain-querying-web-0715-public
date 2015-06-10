@@ -1,5 +1,11 @@
 class Department
-	attr_accessor :id, :name
+	# attr_accessor :id, :name
+
+  ATTRIBUTES = {
+    :id => "INTEGER PRIMARY KEY",
+    :name => "TEXT",
+  }
+  attr_accessor *ATTRIBUTES.keys
 
 	def self.create_table
 		sql = <<-SQL
@@ -82,6 +88,17 @@ class Department
 
   def save
     persisted? ? update : insert
+  end
+
+#Unclear when to build these methods
+  def courses
+    Course.find_all_by_department_id(self.id)
+  end
+
+  def add_course(course)
+    course.department_id = self.id
+    course.save
+    self.save
   end
   
 end
