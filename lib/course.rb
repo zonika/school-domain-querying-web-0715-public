@@ -6,7 +6,7 @@ class Course
     CREATE TABLE IF NOT EXISTS courses (
       id INTEGER PRIMARY KEY,
       name TEXT,
-      department_id TEXT
+      department_id INTEGER
     )
     SQL
 
@@ -71,10 +71,18 @@ class Course
   def update
     sql = <<-SQL
       UPDATE courses
-      SET name = ?,department_id = ?
+      SET name = ?, department_id = ?
       WHERE id = ?
     SQL
     DB[:conn].execute(sql, attribute_values, id)
+  end
+
+  def persisted?
+    !!self.id
+  end
+
+  def save
+    persisted? ? update : insert
   end
 
 
