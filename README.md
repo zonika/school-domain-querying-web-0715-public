@@ -1,4 +1,5 @@
-##Objectives: You are going to build an ORM, which stands for <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>. ORM's are powerful tools that abstract away raw SQL statements, giving you access to methods for searching, sorting, associating, just to name a few. Ruby on Rails is powered by an ORM called Active Record, which is what makes Rails so awesome. The overall goal of this lab is to gain an understanding of ORM's and an appreciation for the abstraction that is provided.
+##Objectives: 
+You are going to build an ORM, which stands for <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>. ORM's are powerful tools that abstract away raw SQL statements, giving you access to methods for searching, sorting, associating, just to name a few. Ruby on Rails is powered by an ORM called Active Record, which is what makes Rails so awesome. The overall goal of this lab is to gain an understanding of ORM's and an appreciation for the abstraction that is provided.
 
 ###Right now your ORM Student class has methods that will:
 
