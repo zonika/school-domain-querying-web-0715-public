@@ -35,11 +35,11 @@ end
 def department
   #successfully gets department
 end
-```
-  
+ 
 def department=(department)
   #set department id when deparment is set
 end
+```
 
 ```ruby 
 def students
