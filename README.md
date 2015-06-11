@@ -10,18 +10,14 @@
 6. Add a course to a student.
 7. Retreive all of the courses of a student.
 
-After completing this lab, your Course, Department and Registration classes will have similar functionality and the abilitiy to talk to each other. In order to make this happen, your tables will use <a href="http://www.sql-join.com/">SQL joins</a> 
-<img src="join.png"> 
-
-For example, you will be able to find all courses by department name or add a course to a particular student.
-
+After completing this lab, your Course, Department and Registration classes will have similar functionality and the abilitiy to talk to each other. In order to make this happen, your tables will use <a href="http://www.sql-join.com/">SQL joins</a>. You will be able to do things like find all courses by department name or add a course to a particular student.
 
 ###A Note On Integration Tests
 <a href="Integration testing - Wikipedia, the free encyclopedia">Integration testing</a>combines all of your models and tests them as a group. It occurs after unit testing and before validation testing to make sure everything "integrates" and works together.
 
 In order for the integration tests to pass completely, you will need to build methods that relate Course and Student to Department. They will go in the Course and Student classes.
 
-###Department Class
+###Department 
 ```ruby 
 def course
   #find all courses by department_id
@@ -30,8 +26,21 @@ end
 def add_course(course)
   #add a course to a department and save it
 end
+```
 
-###Course Class
+###Course 
+
+```ruby
+def department
+  #successfully gets department
+end
+```
+  
+def department=(department)
+  #set department id when deparment is set
+end
+
+```ruby 
 def students
   #find all students by department_id
 end
