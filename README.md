@@ -49,3 +49,9 @@ def add_student(student)
   #add a student to a particular course and save them
 end
 ```
+
+##Resources
+* <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>
+* <a href="http://www.sql-join.com/">SQL joins</a>
+* <a href="Integration testing - Wikipedia, the free encyclopedia">Integration testing</a>
+
