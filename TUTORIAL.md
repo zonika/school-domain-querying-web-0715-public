@@ -298,7 +298,6 @@ Great, registration tests are now all green.
 In order for the integration tests to pass completely, you will need to build methods that relate Course and Student to Department using joins. They will go in the Course and Student classes.
 
 ## Course relation to Department
-###course.rb
 
 Since our Courses belong to a Department, they have what is called a foreign key in the form of `department_id`. Since we have access to this, we can call `Department.find_by_id` and pass in the `department_id`. If 
 `@department` has not been set yet, it will set it, otherwise it will return `@deparment`. For example, if the Department already exists, it will already have a `department_id` and we would not have to set it again.
@@ -317,8 +316,6 @@ def department=(department)
 end
 
 ```
-
-###department.rb
 
 Here we are building a `courses` method that will list out all of the courses in a particular department. From inside our Department class, we are calling `find_by_deparment_id` and passing in `self.id`, which is an instance of a Course accessed by it's `id`.
 
