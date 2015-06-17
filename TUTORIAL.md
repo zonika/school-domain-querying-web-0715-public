@@ -1,11 +1,11 @@
 ##Overview
-Before you get started, the first thing you should do is read through the README. The README tells you that there is a `lib/student.rb` file that is built out and to use it as a guide. Open `lib/student.rb` and read through it, as well as the specs, to get a high level overview of what your end goal is. Now that you have a sense of direction, go ahead and  run the test suite by typing `rspec` into the terminal. As expected, the student class completely passes since it was already created for you. 
+Before you get started, the first thing you should do is read through the README. The README tells you that there is a `lib/student.rb` file that is built out and to use it as a guide. Open `lib/student.rb` and read through it, as well as the specs, to get a high level overview of what your end goal is. Our goal for this lab is to create an ORM - an Object Relational Mapper. This means we'll be creating a Ruby interface for our database, wrapping SQL statements in methods that perform basic CRUD operations. Now that you have a sense of direction, go ahead and  run the test suite by typing `rspec` into the terminal. As expected, the student class completely passes since it was already created for you. 
 
 The first failing test is in our Course class, `undefined method create_table for Course:Class.` 
 
 If you take a look at `lib/student.rb`, you will see there is a `create_table` method already written. The process for creating a new table will be similar for all of the classes you build, minus a few key details. For exampe, the `SQL` statement for our student class reads `CREATE TABLE IF NOT EXISTS students`. To get this to work for our course class, we will have to change it to `CREATE TABLE IF NOT EXISTS courses`. Don't forget to use commas between your `id`, `name` and `department_id` attributes, otherwise it will be invalid code and your tests will not pass. Compare your Student and Course classes, see the difference? The last thing we need to do is add our reader and writer methods, or `attr_accessors` for `:id`, `:name` and `:department_id`. Our 
 
-###Note: `create_table` and `drop_table` are tested together in the specs, so you will have to build both of them as well as add your `attr_accessors` before your tests pass.
+***Note: `create_table` and `drop_table` are tested together in the specs, so you will have to build both of them as well as add your `attr_accessors` before your tests pass.***
 
 ##lib/course.rb
 
@@ -28,7 +28,7 @@ attr_accessor :id, :name, :department_id
 end
 
 ```
-We now have a way to create a table, but what if we want to drop a table? Yep, we need a `drop_table` method to complete the circuit. Take a look at your `lib/student.rb` and you will see a `drop_table` method for students, use that as your guide. This method is pretty clear, if a table exists, drop it when the method is executed. Just like our `create_table` method, we need to prepend `self`, which accesses our Class scope. By calling `self` on `drop_table`, we will drop all courses in the Course class.
+We now have a way to create a table, but what if we want to drop a table? Yep, we need a `drop_table` method to complete the circuit. Take a look at your `lib/student.rb` and you will see a `drop_table` method for students, use that as your guide. This method is pretty clear, if a table exists, drop it when the method is executed. Just like our `create_table` method, we need to prepend `self`, which accesses our Class scope. Since the courses table is responsible for storing all the courses in the Course class, it makes sense for this to be a class method.
 
 ```ruby
 def self.drop_table
@@ -38,7 +38,7 @@ end
 ```
 Run `rspec` and your will see the next error, `undefined method insert`. Again, lets take a look at our `student.rb` file and see if we have reusable code. 
 
-It looks like we have one built for us so lets modify that and use it. Let's also create a helper method called `attribute_values` to keep everything organized. Instead of typing out all of the values in our insert method, we can call the `attribute_values` method instead.
+It looks like we have an `insert` method built for us so lets modify that and use it. Let's also create a helper method called `attribute_values` to keep everything organized. Instead of typing out all of the values in our insert method, we can call the `attribute_values` method instead.
 
 ```ruby
 def attribute_values
@@ -57,7 +57,7 @@ def insert
   @id = DB[:conn].execute("SELECT last_insert_rowid() FROM courses")[0][0]
 end
 ```
-Run `rspec`, `undefined method new_from_db`. This method is going to take the information from the database and create a new instance by utilizing a method called tap. Tap "yields self to the block, and then returns self. The primary purpose of this method is to “tap into” a method chain, in order to perform operations on intermediate results within the chain." In our case we are tapping into Course and creating a new instance while assigning it's attributes to specific rows.
+Now when we run `rspec`, we see `undefined method new_from_db`. This method is going to take the information from the database and create a new instance by utilizing a method called `tap`. The `tap` method "yields `self` to the block, and then returns `self`. The primary purpose of this method is to “tap into” a method chain, in order to perform operations on intermediate results within the chain." In our case we are tapping into Course and creating a new instance while assigning it's attributes to specific rows.
 
 ```ruby
 def self.new_from_db(row)
@@ -69,9 +69,9 @@ def self.new_from_db(row)
 end
 ```
 
-Now we can create a Courses table, insert a course and drop a course. I think being able to find a course by it's name would be useful, which is our next error. 
+Now we can create a Courses table, insert a course and drop a course. Being able to find a course by it's name would also be useful, which is our next error. 
 
-We need to build a method called `find_by_name` Again we can use `lib/student.rb` file as an example, replacing the necessary variables. Here we are selecting all from our Courses table where the name is equal to the param we are passing in, then limiting it to one.
+We need to build a method called `find_by_name`. Again we can use `lib/student.rb` file as an example, replacing the necessary variables. Here we are selecting all from our courses table where the name is equal to the param we are passing in, then limiting it to one.
 
 ```ruby
  def self.find_by_name(name)
@@ -87,7 +87,7 @@ We need to build a method called `find_by_name` Again we can use `lib/student.rb
     end.first
   end
 ```
-Let's run `rspec` for our next error, `undefined method find_all_by_department_id`. Here we want to be able to find all courses by their `department_id`. The SELECT statement for this reads pretty clearly, select * (* stands for all) from the Courses table, where the `deparment_id` of the course equals the `id` we are passing in to the method, very simlilar to finding by name. Compare this code with your Student class to see the differences.
+Let's run `rspec` for our next error, `undefined method find_all_by_department_id`. Here we want to be able to find all courses by their `department_id`. The `SELECT` statement for this reads pretty clearly, `SELECT *` (`*` stands for all) from the courses table, where the `deparment_id` of the course equals the `id` we are passing in to the method, very simlilar to finding by name. Compare this code with your Student class to see the differences.
 
 ```ruby
 def self.find_all_by_department_id(id)
@@ -100,7 +100,7 @@ end
 ```
 Now we can create a Courses table, insert a course into the table, delete the table, find a course by name or department_id. What if we want to change the title of a course? We need a way to update the table.
 
-Run `rspec` and you will see, `undefined method update`. Let's take a look at our `student.rb` file and see if there is anything to guide us. Looks like there is an `update` method built already, let's deconstruct it.
+Run `rspec` and you will see `undefined method update`. Let's take a look at our `student.rb` file and see if there is anything to guide us. Looks like there is an `update` method built already, let's deconstruct it.
 
 The `update` method will take the values you are changing, find the object by it's id and update the instance. You can see our helper method `attribute_values` being passed in to the `DB[:conn].execute(sql, attribute_values, id)` part of the method.
 
@@ -116,13 +116,13 @@ end
 ```
 The last piece of this puzzle is the ability to save our changes, which we will write two methods for that work together. 
 
-The first is `persisted?` This is a helper method that checks whether or not the changes exist in the database for the given object. If it did persist, it returns true, if not it returns false. 
+The first is `persisted?`. This is a helper method that checks whether or not there is already a row in the database for a given object. If it is persisted it returns true, if not it returns false. 
 
 In ruby, it is convention that methods ending in a `?` will return either true or false. 
 
 Skip down to the solution and you will notice the double exclamation points in the body of our `persisted?` method. These are called bangs. One bang will negate a boolean. So if something is true, a bang in front will make it false. If it is false, a bang in front will make it true. 
 
-A double bang is a double negation and is commonly used to force a method to return a boolean.
+A double bang is a double negation and is commonly used to convert something into its boolean equivalent (for example, `!!"hello"` returns `true`, and `!!nil` returns `false`).
 
 Here is an example:
 
@@ -135,7 +135,7 @@ def title_exists?
   !!title 
 end
 ```
-The double bang turns `title` into a boolean so that our `title_exists?` method is useful to us.
+The double bang turns `title` into a boolean so that our `title_exists?` method returns either `true` or `false`.
 
 In our case `self.id` would return an integer, by calling the double bang it returns a boolean. This way in our save method, we can call `persisted?`, which is a now boolean. 
 
@@ -143,7 +143,7 @@ We are also using the ternary operator which reads like this.
 
 `if_this_is_a_true_value ? then_the_result_is_this : else_it_is_this`
 
-If you put it all together we get the following code which will check if the changes persisted, if they did it will update and save the current object, otherwise `insert` them as a new instance.
+If you put it all together we get the following code for the `save` method that will allow us to check if there's already a row in the database for the object it was called on, if there is it will just `update` the data, if not it will `insert` a new row for that object.
 
 ```ruby
 def persisted?
@@ -184,7 +184,7 @@ end
 ```
 *Always remember to use the plural form of the table name in your SQL, departments, not department.*
 
-The next error is looking for an insert method, just like before. Again, reuse your code, swapping out the Courses table variables for Departments.
+The next error is looking for an insert method, just like before. Again, reuse your code, swapping out the courses table variables for departments.
 ###`insert`
 
 ```ruby
@@ -201,7 +201,7 @@ def insert
 end
 ```
 
-We need another `new_from_db` method, just like before. Make sure the rows we are creating match the attributes of our Departments table, which contains an id and a name.
+We need another `new_from_db` method, just like before. Make sure the rows we are creating match the attributes of our departments table, which contains an id and a name.
 
 ###`new_from_db`
 
@@ -214,7 +214,7 @@ def self.new_from_db(row)
 end
 ```
 
-Next is `find_by_name`, look familar? Again we can resuse our previous code, updating the table we are selecting from, this time it would be Departments.
+Next is `find_by_name`, look familar? Again we can resuse our previous code, updating the table we are selecting from, this time it would be departments.
 ###`find_by_name`
 
 ```ruby
@@ -232,7 +232,7 @@ def self.find_by_name(name)
 end
 ```
 
-Next we need a `find_by_id` method. This is very similar to `find_by_name`. Here we pass in the id, select all from the departments table where the id is equal to the id we passed in. If there is a match, we create a new instance from the database.
+Next we need a `find_by_id` method. This is very similar to `find_by_name`. Here we pass in the id and select all from the departments table where the id is equal to the id we passed in. If there is a match, we create a new instance from the database.
 
 ###`find_by_id`
 ```ruby
@@ -244,6 +244,7 @@ end
 ```
 
 Our update and save methods behave exacly the same as they do in our Course class. Again we just have to switch out the tables we are searching to match Departments and make sure we remove the `depatment_id` column.
+
 ###`udpate`
 ```
 def update
@@ -295,12 +296,13 @@ end
 Great, registration tests are now all green.
 
 ##Integration Tests
+
 In order for the integration tests to pass completely, you will need to build methods that relate Course and Student to Department using joins. They will go in the Course and Student classes.
 
 ## Course relation to Department
 
-Since our Courses belong to a Department, they have what is called a foreign key in the form of `department_id`. Since we have access to this, we can call `Department.find_by_id` and pass in the `department_id`. If 
-`@department` has not been set yet, it will set it, otherwise it will return `@deparment`. For example, if the Department already exists, it will already have a `department_id` and we would not have to set it again.
+Since a course belongs to a department, a course needs to have a foreign key, `department_id`. For the `department` method in the Course class, we can call `Department.find_by_id` and pass in the `department_id`. If 
+`@department` has not been set yet, it will set it and return it, otherwise it will just return `@deparment`.
 
 ```ruby
 def department
