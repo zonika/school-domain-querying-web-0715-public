@@ -299,19 +299,21 @@ Great, registration tests are now all green.
 
 In order for the integration tests to pass completely, you will need to build methods that relate Course and Student to Department using joins. They will go in the Course and Student classes.
 
-## Course relation to Department
 
 Since a course belongs to a department, a course needs to have a foreign key, `department_id`. For the `department` method in the Course class, we can call `Department.find_by_id` and pass in the `department_id`. If 
 `@department` has not been set yet, it will set it and return it, otherwise it will just return `@deparment`.
 
+###lib/course.rb
 ```ruby
 def department
   @department ||= Department.find_by_id(department_id)
 end
 ```
 
-For our `department=` writer method, we are passing in `department`, then calling `self.department_id`. Here we prepend `self` since we are accessing an instance of the Department class. If we did not use self, we would be writing an overarching Department class. We then set that equal to `department.id`. We have now created a bridge between Course and Department by using our `department_id`.
+For `department=`, we  are setting `@department`, if it has already been set, `department` can just return it without having to find it in the database. There are times when `department` is called when `@department` hasn't been set yet, which is why the `||=` is necessary. `||=` reads, set this variable, unless it already has a value.
 
+
+###lib/course.rb
 ```ruby 
 def department=(department)
   self.department_id = department.id 
@@ -321,6 +323,7 @@ end
 
 Here we are building a `courses` method that will list out all of the courses in a particular department. From inside our Department class, we are calling `find_by_deparment_id` and passing in `self.id`, which is an instance of a Course accessed by it's `id`.
 
+###lib/department.rb
 ```ruby 
 def courses
   Course.find_all_by_department_id(self.id)
@@ -329,6 +332,7 @@ end
 
 Here we are building an `add_course` method that does just that, add's a course to a department. In order to do this, we need to tell the computer which department the course belongs to. We do this by calling `course.department_id` and setting it equal to `self.id`, which is the instance of that course based on it's id. We then save it.
 
+###lib/department.rb
 ```ruby
 def add_course(course)
   course.department_id = self.id
@@ -336,17 +340,11 @@ def add_course(course)
   self.save
 end
 ```
-###Example
-```ruby
-def add_course(biology) # => Pass in a new course called biology.
-  biology.department_id = self.id # => Access that courses department_id, which is in our Course class and set it equal to self.id, which is the instance of a new course in our department that we are creating.
-  biology.save # => We then save biology.
-  self.save # => And save the new course in our department.
-end
-```
-## Student relation to Department
+
 
 In our `add_student` method, we are taking in a student, inserting them into our Registrations table using the `course_id` and `student_id`.
+
+###lib/course.rb
 
 ```ruby
  def add_student(student)
@@ -358,6 +356,8 @@ In our `add_student` method, we are taking in a student, inserting them into our
 For our students method, we have a double join, which can be tricky so I've created a visualization below. Read through the code and see if you can figure out what is happening. The takeaway her is how we can join tables together to create a subsection. In our case, we are looking for all students where their student id is present in the registrations and courses tables, therefore showing us who is taking a given course from a specific department.
 
 <img src="join.png">
+
+###lib/course.rb
 
 ```ruby
   def students
@@ -379,6 +379,7 @@ For our students method, we have a double join, which can be tricky so I've crea
 
 Our last error is looking for a `students` method, which enables a course to add a student to the instance of that course. Here we have a SQL statement that inserts a given student into our registrations table, using the `course_id` and `student_id`.
 
+###lib/course.rb
 ```ruby
 def add_student(student)
   sql = "INSERT INTO registrations (course_id, student_id) VALUES (?,?);"
