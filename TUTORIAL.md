@@ -1,3 +1,5 @@
+# Guide to Solving and Reviewing School Domain Querying
+
 ##Overview
 Before you get started, the first thing you should do is read through the README. The README tells you that there is a `lib/student.rb` file that is built out and to use it as a guide. Open `lib/student.rb` and read through it, as well as the specs, to get a high level overview of what your end goal is. Our goal for this lab is to create an ORM - an Object Relational Mapper. This means we'll be creating a Ruby interface for our database, wrapping SQL statements in methods that perform basic CRUD operations. Now that you have a sense of direction, go ahead and  run the test suite by typing `rspec` into the terminal. As expected, the student class completely passes since it was already created for you. 
 
