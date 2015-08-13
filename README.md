@@ -52,8 +52,8 @@ def add_student(student)
 end
 ```
 
-##Resources
-* <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>
-* <a href="http://www.sql-join.com/">SQL joins</a>
-* <a href="Integration testing - Wikipedia, the free encyclopedia">Integration testing</a>
+## Resources
+* [Object Relational Mapper](http://en.wikipedia.org/wiki/Object-relational_mapping)
+* [SQL Joins](http://www.sql-join.com/)
+* [Integration testing](https://en.wikipedia.org/wiki/Integration_testing)
 
