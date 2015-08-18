@@ -1,5 +1,5 @@
 require_relative 'spec_helper'
-
+require 'pry'
 describe "Integration" do
   context "Course relation to Department" do
     let(:dot_net){
@@ -64,7 +64,6 @@ describe "Integration" do
       comp_sci.name = "Communications"
       dot_net.name = "Underwater Basket Weaving"
       comp_sci.add_course dot_net
-
       comp_sci_from_db = Department.find_by_name "Communications"
       expect(comp_sci_from_db.courses.count).to eq 1
       expect(comp_sci_from_db.courses.first.name).to eq("Underwater Basket Weaving")
